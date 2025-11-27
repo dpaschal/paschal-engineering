@@ -1,0 +1,33 @@
+# Cloudflare Tunnel Configuration
+# Tunnel ID: 32b733d0-5fd1-43cd-a12f-240e10536c48
+# Credentials file not included in repo (see .gitignore)
+
+tunnel: YOUR-TUNNEL-ID-HERE
+credentials-file: /path/to/credentials.json
+
+ingress:
+  # paschal-engineering.com
+  - hostname: paschal-engineering.com
+    service: http://localhost:8080
+  - hostname: www.paschal-engineering.com
+    service: http://localhost:8080
+  
+  # paschal-engineering.com/lincoln-demo -> lfg-grafana
+  - hostname: paschal-engineering.com
+    path: /lincoln-demo/*
+    service: http://10.0.0.2:3001
+  
+  # paschal-engineering.ai
+  - hostname: paschal-engineering.ai
+    service: http://localhost:8081
+  - hostname: www.paschal-engineering.ai
+    service: http://localhost:8081
+  
+  # paschal-enterprises.com
+  - hostname: paschal-enterprises.com
+    service: http://localhost:8082
+  - hostname: www.paschal-enterprises.com
+    service: http://localhost:8082
+  
+  # Catch-all rule
+  - service: http_status:404

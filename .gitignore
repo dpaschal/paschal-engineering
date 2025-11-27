@@ -1,0 +1,33 @@
+# Secrets & Credentials
+*.json
+*.pem
+*.key
+*.crt
+*credentials*
+*secret*
+*password*
+*.env
+
+# Cloudflare Tunnel
+.cloudflared/
+32b733d0-5fd1-43cd-a12f-240e10536c48.json
+
+# Grafana
+grafana-data/
+*.db
+
+# Prometheus
+prometheus-data/
+
+# Logs
+*.log
+logs/
+
+# Temp files
+*.tmp
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
