@@ -55,7 +55,6 @@ nav:
   - Knowledge Base:
       - Overview: LESSONS-LEARNED.md
   - Documentation:
-      - Environment: myenvironment.md
       - Progress: PROGRESS.md
       - TODO: TODO.md
   - Security:
