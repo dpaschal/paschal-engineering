@@ -1,0 +1,68 @@
+site_name: Paschal Engineering Infrastructure
+site_description: Technical documentation and knowledge base for infrastructure and services
+site_author: Paschal Engineering
+repo_url: https://github.com/dpaschal/paschal-engineering
+repo_name: dpaschal/paschal-engineering
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Knowledge Base:
+      - Overview: LESSONS-LEARNED.md
+  - Documentation:
+      - Environment: myenvironment.md
+      - Progress: PROGRESS.md
+      - TODO: TODO.md
+  - Security:
+      - Firewall Audit: UDM-PRO-FIREWALL-AUDIT.md
+      - Network Isolation: NETWORK-ISOLATION-FINDINGS.md
+  - Credentials: CREDENTIALS-README.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/dpaschal/paschal-engineering
