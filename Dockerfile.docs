@@ -1,5 +1,8 @@
 FROM python:3.11-slim AS builder
 
+# Install git (required for mkdocs-git-revision-date-localized-plugin)
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
 # Install MkDocs and required plugins
 RUN pip install --no-cache-dir \
     mkdocs \

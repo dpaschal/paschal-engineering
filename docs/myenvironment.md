@@ -74,7 +74,7 @@
 | 192.168.6.0/24 | 4 | 192.168.6.1 | IoT-Guest Network |
 | 10.10.0.0/24 | 5 | 10.10.0.1 | Server Network |
 
-**UDM Pro:** 192.168.0.1 (pacxis.built@gmail.com / Pacxis1.618!)
+**UDM Pro:** 192.168.0.1 ([REDACTED] / [REDACTED])
 **WiFi Networks:**
 - KonaOffice (5GHz, Office VLAN, WPA2/WPA3)
 - KonaGuest (2.4GHz, IoT-Guest VLAN, WPA2/WPA3)
