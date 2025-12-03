@@ -4,8 +4,8 @@
 
 ## Where to Find Actual Credentials
 
-- **Local Environment Docs:** `~/AI/myenvironment.local.md` (on htnas02 and laptop)
-- **Local To-Do:** `~/AI/to-do.local.md` (on htnas02 and laptop)
+- **Local Environment Docs:** `~/AI/myenvironment.local.md` (on kube01 and laptop)
+- **Local To-Do:** `~/AI/to-do.local.md` (on kube01 and laptop)
 - **Password Manager:** [Your password manager here]
 
 ## Files with Real Credentials (DO NOT COMMIT)

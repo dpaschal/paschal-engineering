@@ -22,7 +22,7 @@
 - Created docs/sessions/ directory for progress tracking
 - Repository: https://github.com/dpaschal/paschal-engineering
 
-### ✅ UFW Firewall Cleanup (htnas02)
+### ✅ UFW Firewall Cleanup (kube01)
 - Removed 6 legacy Traefik rules (ports 8180, 8181, 8143)
 - Removed legacy DNS forwarding rule (port 53/podman1)
 - UFW status: ACTIVE and properly configured

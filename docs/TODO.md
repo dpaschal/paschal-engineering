@@ -51,7 +51,7 @@
 - [ ] **Create cost tracking spreadsheet**
   - Domains: ~$30/year
   - Google Voice: ~$10/month
-  - Infrastructure: $0 (using htnas02)
+  - Infrastructure: $0 (using kube01)
 - [ ] **Define target markets** (avoid financial services)
   - Healthcare tech
   - Manufacturing/industrial
@@ -262,7 +262,7 @@
 - [ ] Copy to Ventoy USB (bootable)
 - [ ] Use Claude Code to manage entire deployment
 - [ ] Spin up all services via Claude Code automation
-- [ ] Migrate appropriate workloads from htnas02 to K8s cluster
+- [ ] Migrate appropriate workloads from kube01 to K8s cluster
 
 **Tech Stack:**
 - Base OS: Flatcar Container Linux
@@ -396,7 +396,7 @@
 - NVMe storage for model loading speed
 - Power efficiency (avoid high electricity costs)
 - Budget-friendly (used/refurbished acceptable)
-- Can run all current htnas02 workloads PLUS Ollama
+- Can run all current kube01 workloads PLUS Ollama
 
 **Options to Research:**
 - [ ] Dell PowerEdge R740 (2U, dual Xeon, GPU support)

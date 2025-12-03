@@ -1,6 +1,6 @@
 # Lessons Learned
 
-This document captures critical lessons learned during infrastructure work on htnas02. Each entry includes the problem, root cause, solution, and key takeaways to prevent similar issues in the future.
+This document captures critical lessons learned during infrastructure work on kube01. Each entry includes the problem, root cause, solution, and key takeaways to prevent similar issues in the future.
 
 ---
 
@@ -104,10 +104,10 @@ podman exec plex env | grep PUID
 **Impact:** Intermittent service connectivity issues
 
 #### Problem
-Services on htnas02 (dashy.htnas02, plex.htnas02, etc.) were intermittently unreachable from laptop, showing "ERR_ADDRESS_UNREACHABLE" in browser.
+Services on kube01 (dashy.kube01, plex.kube01, etc.) were intermittently unreachable from laptop, showing "ERR_ADDRESS_UNREACHABLE" in browser.
 
 #### Root Cause
-`/etc/hosts` on laptop contained duplicate entries for *.htnas02 hostnames:
+`/etc/hosts` on laptop contained duplicate entries for *.kube01 hostnames:
 - Old entries pointing to 192.168.1.145 (previous VLAN)
 - New entries pointing to 192.168.4.144 (current VLAN)
 - DNS resolution was inconsistent depending on which entry was matched first
@@ -115,7 +115,7 @@ Services on htnas02 (dashy.htnas02, plex.htnas02, etc.) were intermittently unre
 #### Solution
 Removed all old entries pointing to 192.168.1.145:
 ```bash
-sudo sed -i '/^192\.168\.1\.145.*htnas02/d' /etc/hosts
+sudo sed -i '/^192\.168\.1\.145.*kube01/d' /etc/hosts
 ```
 
 #### Key Takeaways
@@ -127,10 +127,10 @@ sudo sed -i '/^192\.168\.1\.145.*htnas02/d' /etc/hosts
 #### Diagnostic Commands
 ```bash
 # Check which IP is being resolved
-getent hosts dashy.htnas02
+getent hosts dashy.kube01
 
-# Find all htnas02 entries
-grep htnas02 /etc/hosts
+# Find all kube01 entries
+grep kube01 /etc/hosts
 
 # Verify connectivity to specific IP
 curl -I http://192.168.4.144:8080

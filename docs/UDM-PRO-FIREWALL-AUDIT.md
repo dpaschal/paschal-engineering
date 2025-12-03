@@ -37,16 +37,16 @@ The UDM Pro firewall is well-configured with appropriate isolation for Work and 
 ### 2. DNS Resolution Rules
 
 The following services have DNS Host (A) resolution rules (all allow):
-- htnas02
-- plex.htnas02
-- sonarr.htnas02
-- radarr.htnas02
-- sabnzbd.htnas02
-- prowlarr.htnas02
-- overseerr.htnas02
+- kube01
+- plex.kube01
+- sonarr.kube01
+- radarr.kube01
+- sabnzbd.kube01
+- prowlarr.kube01
+- overseerr.kube01
 
 **Analysis:**  
-✅ These rules allow DNS resolution for services running on htnas02. This is standard for local DNS resolution.
+✅ These rules allow DNS resolution for services running on kube01. This is standard for local DNS resolution.
 
 **Recommendation:** Ensure these hostnames are only resolvable on the internal network, not externally.
 
@@ -104,7 +104,7 @@ The following services have DNS Host (A) resolution rules (all allow):
 | Allow Port Forward Plex | Firewall | Allow | TCP | External | Any | Internal | 10.0.0.2 | 32499 |
 
 **Analysis:**  
-✅ Firewall rule corresponding to the port forward. Allows external TCP traffic to reach htnas02 (10.0.0.2) on port 32499.
+✅ Firewall rule corresponding to the port forward. Allows external TCP traffic to reach kube01 (10.0.0.2) on port 32499.
 
 **Recommendation:** Ensure Plex authentication is enforced. Consider restricting source IPs if you know where you'll access from.
 
@@ -170,7 +170,7 @@ This prevents:
 3. lfg-demo traffic is already isolated by virtue of being a container network
 
 **Action Required:**
-- Verify on htnas02: `ip addr show` to check for br-lfg-demo interface
+- Verify on kube01: `ip addr show` to check for br-lfg-demo interface
 - Check Podman network config: `podman network inspect lfg-demo`
 - Confirm isolation: lfg-demo containers should not be able to reach compose_default network (10.89.3.0/24)
 
@@ -249,7 +249,7 @@ From the Policy Table and previous audits:
 | 2 | 192.168.2.0/24 | Home | Personal devices |
 | 3 | 192.168.3.0/24 | Work | Work devices (ISOLATED) |
 | 4 | 192.168.4.0/24 | IoT | Smart home devices (ISOLATED) |
-| 10 | 10.0.0.0/24 | Server-10G | htnas02 and infrastructure |
+| 10 | 10.0.0.0/24 | Server-10G | kube01 and infrastructure |
 | N/A | 10.89.3.0/24 | compose_default | Podman default network |
 | N/A | 10.90.0.0/24 | lfg-demo | LFG Grafana demo (isolated) |
 | N/A | 100.x.x.x | Tailscale | VPN mesh network |

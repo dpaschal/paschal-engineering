@@ -8,7 +8,7 @@
 
 ## Table of Contents
 1. [Network Overview](#network-overview)
-2. [htnas02 Server](#htnas02-server)
+2. [kube01 Server](#kube01-server)
 3. [Container Stack](#container-stack)
 4. [Monitoring & Automation](#monitoring--automation)
 5. [IoT Networks & Devices](#iot-networks--devices)
@@ -89,13 +89,13 @@ Both sites use Cloudflare DDNS to maintain VPN connectivity when ISP assigns new
 **Home DDNS:**
 - **Hostname:** circuit.paschal-engineering.com
 - **Record ID:** a5d2aaecddcc29983191957b0447d188
-- **Script:** `/usr/local/bin/cloudflare-ddns.sh` (runs every 5 min via cron on htnas02)
+- **Script:** `/usr/local/bin/cloudflare-ddns.sh` (runs every 5 min via cron on kube01)
 - **Log:** `/var/log/cloudflare-ddns.log`
 
 **Kona DDNS:**
 - **Hostname:** kona.paschal-engineering.com
 - **Record ID:** 1835e6d1b1f298a634ef98d88a051448
-- **Script:** `/usr/local/bin/kona-ddns.sh` (runs every 5 min via cron on htnas02)
+- **Script:** `/usr/local/bin/kona-ddns.sh` (runs every 5 min via cron on kube01)
 - **Log:** `/var/log/kona-ddns.log`
 
 ### **VPN Performance**
@@ -121,31 +121,31 @@ Both sites use Cloudflare DDNS to maintain VPN connectivity when ISP assigns new
 - **Environment Documentation:** `/home/paschal/AI/myenvironment.md`
 
 ### **Custom DNS Resolution**
-**Method:** Local /etc/hosts file for htnas02 service access
+**Method:** Local /etc/hosts file for kube01 service access
 
 **Configuration:** `/etc/hosts`
 ```
-# Caddy reverse proxy services on htnas02
-10.0.0.2 plex.htnas02
-10.0.0.2 sonarr.htnas02
-10.0.0.2 radarr.htnas02
-10.0.0.2 sabnzbd.htnas02
-10.0.0.2 prowlarr.htnas02
-10.0.0.2 overseerr.htnas02
-10.0.0.2 dashy.htnas02
-10.0.0.2 n8n.htnas02
-10.0.0.2 grafana.htnas02
+# Caddy reverse proxy services on kube01
+10.0.0.2 plex.kube01
+10.0.0.2 sonarr.kube01
+10.0.0.2 radarr.kube01
+10.0.0.2 sabnzbd.kube01
+10.0.0.2 prowlarr.kube01
+10.0.0.2 overseerr.kube01
+10.0.0.2 dashy.kube01
+10.0.0.2 n8n.kube01
+10.0.0.2 grafana.kube01
 ```
 
 **Access Method:**
-- Services accessed via **https://\<service\>.htnas02** (e.g., https://grafana.htnas02)
-- Caddy reverse proxy on htnas02 handles TLS termination
+- Services accessed via **https://\<service\>.kube01** (e.g., https://grafana.kube01)
+- Caddy reverse proxy on kube01 handles TLS termination
 - Custom /etc/hosts provides local DNS resolution
 - Self-signed certificates used for HTTPS
 
 ---
 
-## htnas02 Server
+## kube01 Server
 
 ### **Hardware Specifications**
 - **Model:** Dell PowerEdge R630
@@ -300,7 +300,7 @@ sudo k3s kubectl get nodes
 
 **n8n Automation:**
 
-**Access:** https://n8n.htnas02 (API Key configured)
+**Access:** https://n8n.kube01 (API Key configured)
 
 **Active Workflows (20 total):**
 
@@ -411,15 +411,15 @@ podman start n8n"
 **Note:** Caddy replaced Traefik as the reverse proxy due to compatibility issues with Traefik.
 
 Caddy provides TLS termination using local certificates (`/etc/caddy/cert.pem`, `/etc/caddy/key.pem`) for:
-- plex.htnas02
-- sonarr.htnas02
-- radarr.htnas02
-- sabnzbd.htnas02
-- prowlarr.htnas02
-- overseerr.htnas02
-- dashy.htnas02
-- n8n.htnas02
-- grafana.htnas02
+- plex.kube01
+- sonarr.kube01
+- radarr.kube01
+- sabnzbd.kube01
+- prowlarr.kube01
+- overseerr.kube01
+- dashy.kube01
+- n8n.kube01
+- grafana.kube01
 
 **Caddyfile Location:** `/data/appdata/caddy/Caddyfile`
 
@@ -436,7 +436,7 @@ Caddy provides TLS termination using local certificates (`/etc/caddy/cert.pem`, 
 **Retention:** 1825 days (5 years)
 
 ### **Grafana Configuration**
-- **URL:** http://10.0.0.2:3000 or https://grafana.htnas02
+- **URL:** http://10.0.0.2:3000 or https://grafana.kube01
 - **Version:** 12.3.0 (Open Source Edition)
 - **Credentials:** admin/[REDACTED]
 - **Container:** grafana (port 3000)
@@ -455,12 +455,12 @@ Caddy provides TLS termination using local certificates (`/etc/caddy/cert.pem`, 
      - Time series: Power Draw, Battery Charge, UPS Load, Voltage trends
    - Data source: Prometheus
 
-2. **Dell R630 Fan Control - htnas02** (`/d/fan-control-htnas02-v2/dell-r630-fan-control-htnas02`)
+2. **Dell R630 Fan Control - kube01** (`/d/fan-control-kube01-v2/dell-r630-fan-control-kube01`)
    - Controls and monitors Dell R630 server fans
    - Data source: Prometheus
 
-3. **Server Resources - htnas02 (LCD)** (`/d/85c3e63a-f1ba-4b0d-8849-5bdd58a710da/server-resources-htnas02-lcd`)
-   - Modern LCD-style dashboard for htnas02 server metrics via node-exporter
+3. **Server Resources - kube01 (LCD)** (`/d/85c3e63a-f1ba-4b0d-8849-5bdd58a710da/server-resources-kube01-lcd`)
+   - Modern LCD-style dashboard for kube01 server metrics via node-exporter
    - Top row: Large stat panels with gradient backgrounds
      - CPU Usage % (green/yellow/red thresholds)
      - Memory Usage % (green/yellow/red thresholds)
@@ -818,7 +818,7 @@ curl http://localhost:5679/voice.xml
 ### **10.0.0.0/24 (br10) - Internal/Server Network**
 | IP | MAC | Hostname | Device Type |
 |----|-----|----------|-------------|
-| 10.0.0.2 | 18:66:da:68:27:a0 | htnas02 | Main server |
+| 10.0.0.2 | 18:66:da:68:27:a0 | kube01 | Main server |
 
 ---
 
@@ -827,18 +827,18 @@ curl http://localhost:5679/voice.xml
 ### **Configuration**
 - **Tailnet:** dpaschal@gmail.com (tail4262ae.ts.net)
 - **MagicDNS:** Enabled
-- **Version:** 1.90.8 on htnas02
+- **Version:** 1.90.8 on kube01
 - **DERP Relay:** iad (Ashburn) - 36.2ms latency
 - **Subnet Routing:** NOT configured
 - **Exit Node:** NOT configured
-- **SSH Server:** Disabled on htnas02
+- **SSH Server:** Disabled on kube01
 
 ### **Connected Devices**
 
 #### **Online**
 | Device | Tailscale IP | IPv6 | OS | DNS Name |
 |--------|--------------|------|----|----|
-| htnas02 | 100.114.72.82 | fd7a:115c:a1e0::3b33:4852 | Linux | htnas02.tail4262ae.ts.net |
+| kube01 | 100.114.72.82 | fd7a:115c:a1e0::3b33:4852 | Linux | kube01.tail4262ae.ts.net |
 | fedora | 100.91.219.31 | - | Linux | fedora.tail4262ae.ts.net |
 | msvr01 | 100.109.173.126 | fd7a:115c:a1e0::2c33:ad7e | Linux | msvr01.tail4262ae.ts.net |
 
@@ -851,9 +851,9 @@ curl http://localhost:5679/voice.xml
 
 ### **Access**
 - Key expiry: April 22, 2026
-- htnas02 has admin/owner privileges
+- kube01 has admin/owner privileges
 - File sharing enabled via PeerAPI
-- **Use Case:** Host-to-host VPN for secure remote access to services on htnas02
+- **Use Case:** Host-to-host VPN for secure remote access to services on kube01
 
 ### **Notes**
 - UDM Pro does NOT have Tailscale installed
@@ -864,7 +864,7 @@ curl http://localhost:5679/voice.xml
 
 ## Firewall Rules
 
-### **htnas02 (UFW)**
+### **kube01 (UFW)**
 **Status:** Active
 **Default Policy:** Deny incoming, Allow outgoing
 
@@ -947,23 +947,23 @@ curl http://localhost:5679/voice.xml
 ## Credentials & Access
 
 ### **SSH Access**
-- **htnas02:** `ssh paschal@10.0.0.2` (passwordless SSH key recommended)
-- **htnas02 (from local machine):** `ssh 10.0.0.2`
+- **kube01:** `ssh paschal@10.0.0.2` (passwordless SSH key recommended)
+- **kube01 (from local machine):** `ssh 10.0.0.2`
 - **UDM Pro:** `ssh root@192.168.1.1` (password: [REDACTED])
-- **Via Tailscale:** `ssh htnas02.tail4262ae.ts.net` or `ssh 100.114.72.82`
+- **Via Tailscale:** `ssh kube01.tail4262ae.ts.net` or `ssh 100.114.72.82`
 
 ### **Service Access**
-- **Grafana:** http://10.0.0.2:3000 or https://grafana.htnas02 (admin/[REDACTED])
+- **Grafana:** http://10.0.0.2:3000 or https://grafana.kube01 (admin/[REDACTED])
 - **Prometheus:** http://10.0.0.2:9090
-- **Plex:** http://10.0.0.2:32499 or https://plex.htnas02
-- **Dashy:** http://10.0.0.2:4000 or https://dashy.htnas02
-- **Media Apps:** Via Caddy reverse proxy at *.htnas02
+- **Plex:** http://10.0.0.2:32499 or https://plex.kube01
+- **Dashy:** http://10.0.0.2:4000 or https://dashy.kube01
+- **Media Apps:** Via Caddy reverse proxy at *.kube01
 
 ### **Hardware Management**
 - **iDRAC:** https://192.168.1.51 (Dell server management)
 - **APC UPS:** http://192.168.1.215 (UPS web interface)
 
-### **Cloud Storage Access (rclone on htnas02)**
+### **Cloud Storage Access (rclone on kube01)**
 - **Configured Remotes:** gdrive (Google Drive), dropbox, onedrive, synology
 - **List remotes:** `ssh 10.0.0.2 "rclone listremotes"`
 - **List Google Drive files:** `ssh 10.0.0.2 "rclone ls gdrive:"`
@@ -971,7 +971,7 @@ curl http://localhost:5679/voice.xml
 - **Search for scanned docs:** `ssh 10.0.0.2 "rclone ls gdrive: | grep -i scanned"`
 
 **Note:** To access Google Drive files from your local machine:
-1. SSH to htnas02: `ssh paschal@10.0.0.2`
+1. SSH to kube01: `ssh paschal@10.0.0.2`
 2. Use rclone commands to copy files to /tmp/
 3. SCP files back to local machine: `scp paschal@10.0.0.2:/tmp/filename /tmp/`
 
@@ -1040,7 +1040,7 @@ Internet (75.177.6.226)
     │   │   └─ APC UPS (192.168.1.215)
     │   │
     │   ├─ br10 (10.0.0.0/24) - Internal/Server
-    │   │   └─ htnas02 (10.0.0.2) ─┐
+    │   │   └─ kube01 (10.0.0.2) ─┐
     │   │                           │
     │   ├─ br2 (192.168.2.0/24) - Home Network
     │   │   ├─ XBOX
@@ -1056,7 +1056,7 @@ Internet (75.177.6.226)
     │       └─ Nest Hub
     │
     └─ Tailscale VPN (100.64.0.0/10)
-        ├─ htnas02 (100.114.72.82) ◄─┘
+        ├─ kube01 (100.114.72.82) ◄─┘
         ├─ fedora (100.91.219.31)
         ├─ msvr01 (100.109.173.126)
         ├─ google-pixel-8-pro (offline)
@@ -1095,7 +1095,7 @@ Internet (75.177.6.226)
 - **Local:** http://10.0.0.2:3001
 - **Future:** https://grafana.paschal-engineering.com (requires domain purchase + Cloudflare Tunnel)
 
-**Firewall Rules (UFW on htnas02):**
+**Firewall Rules (UFW on kube01):**
 - Port 3001: Open to 192.168.1.0/24 (Main LAN), 192.168.3.0/24 (Laptop Network)
 - Port 9092: Optional debug access (same networks)
 
@@ -1340,7 +1340,7 @@ ssh 10.0.0.2 "podman restart lfg-grafana"
 #### **n8n Workflow Management**
 ```bash
 # Access n8n web interface
-# URL: https://n8n.htnas02 (via Caddy reverse proxy)
+# URL: https://n8n.kube01 (via Caddy reverse proxy)
 
 # Check workflow execution logs in n8n UI
 # Navigate to Executions tab for each workflow
@@ -1394,7 +1394,7 @@ ssh 10.0.0.2 "podman restart lfg-grafana"
 ### **Cloudflare Tunnel**
 - **Tunnel ID:** 32b733d0-5fd1-43cd-a12f-240e10536c48
 - **Service:** cloudflared.service (systemd)
-- **Status:** Active, running on htnas02
+- **Status:** Active, running on kube01
 - **Protocol:** QUIC (encrypted, fast)
 - **SSL:** Automatic Let's Encrypt certificates via Cloudflare
 

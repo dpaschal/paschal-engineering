@@ -21,7 +21,7 @@ Project milestones and session summaries
 ### 🌐 [myenvironment.md](./myenvironment.md)
 Complete infrastructure documentation:
 - Network topology (UDM Pro, VLANs, firewall rules)
-- htnas02 server configuration
+- kube01 server configuration
 - All services and containers
 - Tailscale VPN setup
 
