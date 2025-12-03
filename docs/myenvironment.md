@@ -1,8 +1,8 @@
 # My Environment Documentation
 
-**Last Updated:** 2025-11-27 03:05 UTC
+**Last Updated:** 2025-12-03 03:00 UTC
 **Author:** Automated documentation by Claude Code
-**Session:** LFG Grafana demo deployment with 7 n8n workflows, security hardening, firewall configuration
+**Session:** kube01 Ubuntu migration complete - All services operational on new OS
 
 ---
 
@@ -74,7 +74,7 @@
 | 192.168.6.0/24 | 4 | 192.168.6.1 | IoT-Guest Network |
 | 10.10.0.0/24 | 5 | 10.10.0.1 | Server Network |
 
-**UDM Pro:** 192.168.0.1 ([REDACTED] / [REDACTED])
+**UDM Pro:** 192.168.0.1 (pacxis.built@gmail.com / Pacxis1.618!)
 **WiFi Networks:**
 - KonaOffice (5GHz, Office VLAN, WPA2/WPA3)
 - KonaGuest (2.4GHz, IoT-Guest VLAN, WPA2/WPA3)
@@ -150,17 +150,24 @@ Both sites use Cloudflare DDNS to maintain VPN connectivity when ISP assigns new
 ### **Hardware Specifications**
 - **Model:** Dell PowerEdge R630
 - **CPUs:** 2x Intel Xeon E5-2697 v4 (18 cores/36 threads each, 145W TDP, Tmax 85°C)
-- **GPU:** NVIDIA Tesla P4 (for Plex transcoding)
-- **Storage:** 10x 14TB drives (sda-sdj) in ZFS
-- **Network:** 10.0.0.2 (Internal), accessible via SSH from 192.168.1.0/24, 10.0.0.0/24, 100.64.0.0/10 (Tailscale)
-- **iDRAC:** 192.168.1.51 (idrac-6CX7QD2)
-- **UPS:** APC at 192.168.1.215 (apc8A35F0)
+- **RAM:** 750GB DDR4
+- **GPU:** NVIDIA Tesla P4 (for Plex transcoding - **NOT YET CONFIGURED**)
+- **Storage:**
+  - OS: 115GB SSD (/dev/sda) - Ubuntu 24.04 LTS
+  - Data: 10x 14TB drives (/dev/sdc-sdl) in ZFS RAIDZ2 - 59TB usable
+- **Network:**
+  - **Current:** 192.168.4.144 (IoT VLAN via eno4 - 1GbE)
+  - **Intended:** 10.0.0.2 (VLAN 10 via eno1 - 10GbE) - **NOT YET WORKING**
+  - Accessible via SSH from 192.168.1.0/24, 192.168.4.0/24, 100.64.0.0/10 (Tailscale)
+- **iDRAC:** 192.168.1.51 (idrac-6CX7QD2, root/SixHundred#to1)
+- **UPS:** APC at 192.168.1.215 (apc8A35F0) - **CURRENTLY DISCONNECTED (cable borrowed for kube01 eno4)**
 
 ### **Operating System**
-- **OS:** Ubuntu 24.04 LTS (or similar)
-- **Kernel:** Linux
-- **Container Runtime:** Podman 4.9.3 (rootless)
-- **User:** paschal (UID 1000, GID 1000)
+- **OS:** Ubuntu 24.04 LTS (Fresh install 2025-12-02)
+- **Hostname:** kube01 (will be renamed to kube01 in future)
+- **Kernel:** Linux 6.x
+- **Container Runtime:** Podman (using `sudo podman-compose` for rootful deployment)
+- **User:** paschal (UID 1000, GID 1000, password: test123)
 
 ### **Storage Layout (ZFS)**
 ```
@@ -244,6 +251,31 @@ sudo k3s kubectl get nodes
 - **Network:** All containers on `compose_default` bridge (10.89.3.0/24)
 - **Docker Compatibility:** `/usr/bin/docker` is a wrapper script that redirects to podman
 - **Auto-Update:** Daily at 4:00 AM via cron job
+
+### **Documentation & Knowledge Base**
+
+**MkDocs Sites (2 instances):**
+
+1. **Paschal Engineering Infrastructure Docs** (Currently Running)
+   - **Location:** `/data/appdata/paschal-engineering/`
+   - **Containers:** docs-dev (port 8083), docs-prod (port 8084)
+   - **Access:**
+     - Dev: https://docs-dev.kube01
+     - Prod: https://docs.kube01
+   - **Content:** Infrastructure documentation, security audits, credentials, progress tracking, TODO
+   - **In Dashy:** ✅ Yes
+   - **Status:** ✅ Running
+
+2. **Lab Blog / Wiki** (Not Currently Running)
+   - **Location:** `/data/appdata/lab-blog/`
+   - **Container:** Not deployed
+   - **Content:** Blog posts, project notes, server inventory, K8s migration tracking
+   - **Status:** ❌ Not accessible (files exist but no running container)
+   - **Note:** Wiki was converted from MediaWiki to MkDocs format
+
+**Legacy Wiki (Deprecated):**
+- **Location:** `/data/appdata/labwiki/` (MediaWiki + MariaDB)
+- **Status:** ❌ Not running, superseded by lab-blog MkDocs
 
 ### **Running Containers (17 total)**
 
@@ -968,12 +1000,39 @@ curl http://localhost:5679/voice.xml
 - **List remotes:** `ssh 10.0.0.2 "rclone listremotes"`
 - **List Google Drive files:** `ssh 10.0.0.2 "rclone ls gdrive:"`
 - **Copy from Google Drive:** `ssh 10.0.0.2 "rclone copy gdrive:filename /tmp/"`
-- **Search for scanned docs:** `ssh 10.0.0.2 "rclone ls gdrive: | grep -i scanned"`
 
+<<<<<<< Updated upstream
 **Note:** To access Google Drive files from your local machine:
 1. SSH to htnas02: `ssh paschal@10.0.0.2`
 2. Use rclone commands to copy files to /tmp/
 3. SCP files back to local machine: `scp paschal@10.0.0.2:/tmp/filename /tmp/`
+=======
+**Finding Recent Uploads (Screenshots, Images):**
+- **Recent images with timestamps:** `ssh 10.0.0.2 "rclone lsl gdrive: --max-depth 1 | grep -E '\.(png|jpg|jpeg|gif)' | tail -10"`
+- **Recent IMG files:** `ssh 10.0.0.2 "rclone lsl gdrive: --max-depth 1 | grep 'IMG' | tail -10"`
+- **Recent Screenshot files:** `ssh 10.0.0.2 "rclone lsl gdrive: --max-depth 1 | grep -i 'screenshot' | tail -10"`
+- **Important:** Most phone uploads (IMG_*, Screenshot_*) are in Google Drive root directory
+
+**Complete Workflow to View a Google Drive File:**
+```bash
+# 1. Find recent files (shows size, timestamp, filename)
+ssh 10.0.0.2 "rclone lsl gdrive: --max-depth 1 | grep 'IMG' | tail -10"
+
+# 2. Copy to kube01 /tmp/
+ssh 10.0.0.2 "rclone copy 'gdrive:IMG_20251130_174430.jpg' /tmp/"
+
+# 3. Copy to local machine
+scp paschal@10.0.0.2:/tmp/IMG_20251130_174430.jpg /tmp/
+
+# 4. View the file
+# Use Read tool on /tmp/IMG_20251130_174430.jpg
+```
+
+**Quick Reference:**
+- Phone camera photos: `IMG_YYYYMMDD_HHMMSS.jpg` (e.g., IMG_20251130_174430.jpg)
+- Android screenshots: `Screenshot_YYYYMMDD-HHMMSS.png`
+- Files are typically in Google Drive root (no subdirectory)
+>>>>>>> Stashed changes
 
 ---
 
