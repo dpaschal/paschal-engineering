@@ -8,7 +8,7 @@ theme:
   name: material
   palette:
     scheme: slate
-    primary: teal
+    primary: black
     accent: light green
   font:
     text: Roboto Mono
