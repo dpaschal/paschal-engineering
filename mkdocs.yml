@@ -1,4 +1,4 @@
-site_name: Paschal Engineering Infrastructure
+site_name: Paschal Engineering Security
 site_description: Technical documentation and knowledge base for infrastructure and services
 site_author: Paschal Engineering
 repo_url: https://github.com/dpaschal/paschal-engineering
@@ -7,24 +7,16 @@ repo_name: dpaschal/paschal-engineering
 theme:
   name: material
   palette:
-    - scheme: slate
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-    - scheme: default
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
+    scheme: slate
+    primary: teal
+    accent: light green
+  font:
+    text: Roboto Mono
+    code: Source Code Pro
   features:
-    - navigation.tabs
+    - navigation.instant
     - navigation.sections
-    - navigation.expand
     - navigation.top
-    - search.suggest
     - search.highlight
     - content.code.copy
 
